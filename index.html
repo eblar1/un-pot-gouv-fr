@@ -36,6 +36,10 @@
   details { border-bottom:1px solid var(--line); padding:10px 0; }
   summary { cursor:pointer; font-weight:600; }
   footer { margin-top:64px; border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; color:var(--muted); }
+  .hero { display:flex; flex-wrap:wrap; gap:10px; font-size:2.2rem; margin:28px 0 8px; }
+  .photo { margin:24px 0 0; }
+  .photo svg { width:100%; height:auto; border:1px solid var(--line); }
+  .photo figcaption { font-size:13px; color:var(--muted); margin-top:6px; }
   #count { font-variant-numeric:tabular-nums; font-weight:700; }
 </style>
 </head>
@@ -43,7 +47,7 @@
 <header>
   <div class="wrap bar">
     <div class="brand">un-pot.gouv-fr<small>Service de la convivialité · pôle départs</small></div>
-    <nav><a href="#infos">Informations</a><a href="#programme">Programme</a><a href="#inscription">Inscription</a><a href="#faq">FAQ</a></nav>
+    <nav><a href="#infos">Informations</a><a href="#programme">Programme</a><a href="#inscription">Inscription</a></nav>
   </div>
 </header>
 
@@ -51,28 +55,48 @@
   <div class="notice">Site parodique à but amical. Aucun lien avec une quelconque administration.</div>
 
   <h1>Pot de départ de <span data-edit>Erwan</span></h1>
-  <p class="lead">Après <span data-edit>5 ans</span> de bons et loyaux services, le service a l'honneur de vous convier à une cérémonie de départ conforme aux usages en vigueur : gâteaux, boissons et discours trop longs.</p>
+  <p class="lead">Après <span data-edit>5 ans</span> au Service d'information du gouvernement, je vous invite à lever un verre pour mon départ.</p>
   <p><a class="btn" href="#inscription">Confirmer ma présence</a></p>
-  <p>Temps restant avant la cérémonie : <span id="count">…</span></p>
+  <p>Compte à rebours : <span id="count">…</span></p>
+
+  <div class="hero" aria-hidden="true">
+    <span>🍻</span><span>🥨</span><span>🍺</span><span>🥂</span><span>🧀</span><span>🎉</span><span>🍷</span><span>🥜</span>
+  </div>
+
+  <figure class="photo">
+    <svg viewBox="0 0 600 260" role="img" aria-label="Illustration du bar Aux Ministères">
+      <rect width="600" height="260" fill="#f6f6f6"/>
+      <rect x="60" y="50" width="480" height="170" fill="#fff" stroke="#161616" stroke-width="3"/>
+      <rect x="60" y="50" width="480" height="40" fill="#161616"/>
+      <text x="300" y="79" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#fff" letter-spacing="3">AUX MINISTÈRES</text>
+      <rect x="90" y="110" width="110" height="110" fill="#f6f6f6" stroke="#161616" stroke-width="2"/>
+      <rect x="400" y="110" width="110" height="110" fill="#f6f6f6" stroke="#161616" stroke-width="2"/>
+      <rect x="250" y="110" width="100" height="110" fill="#000091" opacity=".85"/>
+      <text x="145" y="175" text-anchor="middle" font-size="44">🍺</text>
+      <text x="455" y="175" text-anchor="middle" font-size="44">🥨</text>
+      <text x="300" y="175" text-anchor="middle" font-size="44">🍻</text>
+    </svg>
+    <figcaption>53 avenue de Ségur, Paris 7e (illustration)</figcaption>
+  </figure>
 
   <h2 id="infos">Informations pratiques</h2>
   <dl>
     <dt>Date</dt><dd><span data-edit>jeudi 19 novembre 2026</span></dd>
     <dt>Heure</dt><dd><span data-edit>à partir de 18 h</span></dd>
-    <dt>Lieu</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Aux+Minist%C3%A8res+Paris+7e"><span data-edit>Bar Aux Ministères, Paris 7e</span></a></dd>
-    <dt>Tenue</dt><dd>Décontractée. Le gilet de service n'est pas exigé.</dd>
+    <dt>Lieu</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Aux+Minist%C3%A8res+Paris+7e"><span data-edit>Aux Ministères, Paris 7e</span></a></dd>
+    <dt>Tenue</dt><dd>Décontractée.</dd>
     <dt>Cagnotte</dt><dd><a href="#"><span data-edit>Lien de la cagnotte</span></a></dd>
   </dl>
 
   <h2 id="programme">Programme</h2>
   <div class="grid">
-    <div class="card"><h3>18 h 00 · Accueil</h3>Émargement informel et premières chips.</div>
-    <div class="card"><h3>18 h 30 · Allocutions</h3>Trois discours, dont un improvisé.</div>
-    <div class="card"><h3>19 h 00 · Remise du cadeau</h3>Applaudissements réglementaires.</div>
-    <div class="card"><h3>19 h 30 · Buffet</h3>Jusqu'à épuisement des stocks.</div>
+    <div class="card"><h3>🍻 18 h 00 · Accueil</h3>Premiers verres et chips.</div>
+    <div class="card"><h3>🎤 18 h 30 · Allocutions</h3>Quelques mots.</div>
+    <div class="card"><h3>🎁 19 h 00 · Remise du cadeau</h3>Un petit cadeau.</div>
+    <div class="card"><h3>🥨 19 h 30 · Apéro</h3>Apéro et bretzels.</div>
   </div>
 
-  <h2 id="inscription">Formulaire d'inscription</h2>
+  <h2 id="inscription">Inscription</h2>
   <form id="f">
     <label>Nom et prénom <input name="nom" required></label>
     <label>Nombre de personnes
@@ -89,13 +113,9 @@
   </form>
   <div id="ok" role="status"></div>
 
-  <h2 id="faq">Foire aux questions</h2>
-  <details><summary>Dois-je prévenir mon supérieur hiérarchique ?</summary><p>Non, mais il sera probablement là.</p></details>
-  <details><summary>Puis-je venir sans cadeau ?</summary><p>Oui, la participation à la cagnotte est facultative, mais appréciée.</p></details>
-  <details><summary>Le pot est-il sur le temps de travail ?</summary><p>Le service ne se prononce pas.</p></details>
 </main>
 
-<footer><div class="wrap">un-pot.gouv-fr · Site non officiel · Mentions légales : on s'est bien amusés.</div></footer>
+<footer><div class="wrap">un-pot.gouv-fr · Site non officiel</div></footer>
 
 <script>
   // Date cible : modifier ici (AAAA-MM-JJTHH:MM)
