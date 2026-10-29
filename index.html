@@ -3,136 +3,452 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>un-pot.gouv-fr · Portail du pot de départ</title>
+<title>un-pot.gouv.fr · Portail du pot de départ</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#161616; --muted:#666; --line:#ddd; --bg:#fff; --soft:#f6f6f6; --accent:#000091; }
+  :root {
+    --ink:#161616; --muted:#666; --line:#ddd; --bg:#fff; --surface:#fff; --field:#f6f6f6;
+    --blue:#000091; --blue-soft:#e3e3fd; --blue-hover:#1212ff; --red:#e1000f;
+    --radius:3px; --shadow:0 1px 2px rgba(22,22,22,.04), 0 8px 24px rgba(0,0,145,.06);
+  }
   * { box-sizing:border-box; }
-  body { margin:0; font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
-  header { border-bottom:1px solid var(--line); }
-  .wrap { max-width:860px; margin:0 auto; padding:0 20px; }
-  .bar { display:flex; justify-content:space-between; align-items:center; padding:14px 0; flex-wrap:wrap; gap:8px; }
-  .brand { font-weight:700; letter-spacing:.02em; }
-  .brand small { display:block; font-weight:400; color:var(--muted); font-size:13px; }
-  nav a { margin-left:18px; color:var(--ink); text-decoration:none; font-size:14px; }
-  nav a:hover { text-decoration:underline; }
-  .notice { background:var(--soft); border-left:4px solid var(--accent); padding:12px 16px; margin:24px 0; font-size:14px; }
-  h1 { font-size:2.2rem; line-height:1.2; margin:40px 0 8px; }
-  h2 { font-size:1.4rem; margin:48px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line); }
-  .lead { font-size:1.15rem; color:var(--muted); max-width:60ch; }
-  .btn { display:inline-block; background:var(--accent); color:#fff; border:0; padding:10px 20px; font-size:1rem; cursor:pointer; text-decoration:none; }
-  .btn:hover { opacity:.9; }
-  dl { display:grid; grid-template-columns:max-content 1fr; gap:8px 24px; margin:0; }
-  dt { font-weight:600; } dd { margin:0; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-  .card { border:1px solid var(--line); padding:16px; }
-  .card h3 { margin:0 0 6px; font-size:1.05rem; }
-  form { display:grid; gap:16px; max-width:480px; }
-  label { display:grid; gap:4px; font-weight:600; }
-  input, select, textarea { font:inherit; padding:8px 10px; border:1px solid #888; border-radius:0; width:100%; }
-  fieldset { border:1px solid var(--line); padding:12px; }
-  fieldset label { font-weight:400; display:flex; gap:8px; align-items:center; }
-  fieldset input { width:auto; }
-  #ok { display:none; border-left:4px solid var(--accent); background:var(--soft); padding:12px 16px; }
-  details { border-bottom:1px solid var(--line); padding:10px 0; }
-  summary { cursor:pointer; font-weight:600; }
-  footer { margin-top:64px; border-top:1px solid var(--line); padding:20px 0 40px; font-size:13px; color:var(--muted); }
-  .hero { display:flex; flex-wrap:wrap; gap:10px; font-size:2.2rem; margin:28px 0 8px; }
-  .photo { margin:24px 0 0; }
-  .photo svg { width:100%; height:auto; border:1px solid var(--line); }
-  .photo figcaption { font-size:13px; color:var(--muted); margin-top:6px; }
-  #count { font-variant-numeric:tabular-nums; font-weight:700; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; font:16px/1.6 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased; }
+  a { color:var(--blue); }
+  .wrap { max-width:960px; margin:0 auto; padding:0 20px; }
+
+  /* En-tête, structure DSFR : corps (marque, service, outils) puis navigation */
+  .hd { background:#fff; box-shadow:0 8px 8px -8px rgba(0,0,0,.16); position:relative; z-index:10; }
+  .hd-body { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:16px; padding-bottom:16px; }
+  .hd-brand { display:flex; align-items:center; gap:16px; text-decoration:none; color:var(--ink); }
+  .hd-brand img { display:block; width:48px; height:48px; }
+  .hd-service { padding-left:16px; border-left:1px solid var(--line); }
+  .hd-title { display:block; font-size:1.25rem; font-weight:700; line-height:1.4; }
+  .hd-tagline { display:block; font-size:.875rem; line-height:1.5; color:var(--muted); }
+  .hd-tools { display:flex; gap:4px; }
+  .hd-tools a { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; font-size:.875rem; font-weight:500; color:var(--blue); text-decoration:none; border-radius:3px; }
+  .hd-tools a:hover { background:#f6f6f6; }
+  .hd-tools svg { width:16px; height:16px; }
+  .hd-nav { border-top:1px solid var(--line); }
+  .hd-nav ul { list-style:none; display:flex; margin:0 auto; padding-top:0; padding-bottom:0; overflow-x:auto; }
+  .hd-nav a { display:block; padding:16px; font-size:.875rem; line-height:1.5; color:var(--ink); text-decoration:none; white-space:nowrap; }
+  .hd-nav li:first-child a { margin-left:-16px; }
+  .hd-nav a:hover { background:#f6f6f6; }
+  .hd-nav a[aria-current] { color:var(--blue); box-shadow:inset 0 -2px 0 var(--blue); }
+
+  /* Hero */
+  .hero { text-align:center; padding:72px 0 40px; position:relative; }
+  h1 { font-size:clamp(2.6rem,8vw,4.5rem); line-height:1.05; letter-spacing:-.035em; font-weight:800; margin:0 0 16px; }
+  .surtitre { margin:0 0 8px; font-size:clamp(1rem,2.4vw,1.25rem); font-weight:600; color:var(--blue); }
+  h1 .dot { color:var(--blue); }
+  .lead { font-size:clamp(1.05rem,2.4vw,1.25rem); color:var(--muted); max-width:56ch; margin:0 auto; }
+
+  /* Carte événement */
+  /* Invitation en forme de billet */
+  .ticket { display:block; margin:16px 0 0; color:inherit; text-decoration:none; view-transition-name:ticket; filter:drop-shadow(0 1px 1px rgba(22,22,22,.1)) drop-shadow(0 10px 24px rgba(0,0,145,.12)); transition:transform .25s ease, filter .25s ease; }
+  .ticket:hover { transform:translateY(-4px); filter:drop-shadow(0 1px 1px rgba(22,22,22,.1)) drop-shadow(0 18px 32px rgba(0,0,145,.18)); }
+  .ticket:focus-visible { outline:2px solid var(--blue); outline-offset:6px; }
+  .hint { text-align:center; margin:18px 0 0; font-size:14px; font-weight:500; color:var(--blue); }
+  .hint span { display:inline-block; transition:transform .2s; }
+  .ticket:hover + .hint span { transform:translateX(4px); }
+
+  /* Deux vues : accueil (billet) et détails */
+  .view[hidden] { display:none; }
+  .mini { display:grid; grid-template-columns:1fr auto; margin-top:40px; color:inherit; text-decoration:none; view-transition-name:ticket; background:#fff; border-radius:3px; filter:drop-shadow(0 1px 1px rgba(22,22,22,.1)) drop-shadow(0 6px 16px rgba(0,0,145,.1)); }
+  .mini-main { display:flex; align-items:center; gap:16px; padding:16px 20px; min-width:0; }
+  .mini-back { font-size:14px; font-weight:500; color:var(--blue); white-space:nowrap; }
+  .mini b { font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mini-stub { position:relative; display:flex; align-items:center; padding:16px 20px; background:var(--blue); color:#fff; font-size:14px; font-weight:600; white-space:nowrap; border-radius:0 3px 3px 0; }
+  .mini-stub::before { content:""; position:absolute; left:-1px; top:8px; bottom:8px; border-left:2px dashed #fff; }
+  .mini:hover .mini-back { text-decoration:underline; }
+  #confettis { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:100; view-transition-name:confettis; }
+  ::view-transition-group(ticket) { animation-duration:.55s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration:.3s; }
+  @media (max-width:640px) {
+    .mini { grid-template-columns:1fr; }
+    .mini-main { flex-direction:column; align-items:flex-start; gap:4px; }
+    .mini-stub { border-radius:0 0 3px 3px; }
+    .mini-stub::before { display:none; }
+  }
+  .event { --stub:280px; --cut:calc(100% - var(--stub)); display:grid; grid-template-columns:1fr var(--stub); background:#fff; border-radius:3px;
+    -webkit-mask:radial-gradient(circle at var(--cut) 0, #0000 14px, #000 14.5px) top/100% 51% no-repeat, radial-gradient(circle at var(--cut) 100%, #0000 14px, #000 14.5px) bottom/100% 51% no-repeat;
+            mask:radial-gradient(circle at var(--cut) 0, #0000 14px, #000 14.5px) top/100% 51% no-repeat, radial-gradient(circle at var(--cut) 100%, #0000 14px, #000 14.5px) bottom/100% 51% no-repeat; }
+  .ticket-main { padding:32px 36px; display:flex; flex-direction:column; }
+  .ticket-top { display:flex; justify-content:space-between; gap:12px; margin-bottom:16px; }
+  .eyebrow { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--blue); margin:0; }
+  .serial { font-size:12px; color:var(--muted); letter-spacing:.06em; font-variant-numeric:tabular-nums; }
+  .event h2 { font-size:1.8rem; line-height:1.2; letter-spacing:-.02em; margin:0 0 8px; }
+  .event p { margin:0; color:var(--muted); }
+  .ticket-meta { display:grid; grid-template-columns:repeat(3,auto); justify-content:start; gap:4px 40px; margin-top:24px; padding-top:16px; border-top:1px dashed var(--line); }
+  .ticket-meta span { display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .ticket-meta b { font-weight:600; font-size:15px; }
+
+  .when { position:relative; background:var(--blue); color:#fff; padding:28px 24px 22px; text-align:center; }
+  .when::before { content:""; position:absolute; left:-1px; top:18px; bottom:18px; border-left:2px dashed #fff; }
+  .when .day { font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.8; }
+  .when .num { display:block; font-size:4.5rem; font-weight:800; line-height:1; letter-spacing:-.04em; margin:4px 0; }
+  .when .month { font-size:1.2rem; font-weight:700; }
+  .when .hour { display:block; margin-top:4px; font-weight:500; opacity:.9; }
+  .when small { display:block; margin-top:16px; font-size:12px; opacity:.75; }
+  .emojis { display:flex; justify-content:center; flex-wrap:wrap; gap:14px; font-size:1.8rem; margin:32px 0 0; }
+  .emojis span { transition:transform .2s; }
+  .emojis span:hover { transform:translateY(-4px) rotate(-8deg); }
+
+  /* Sections */
+  section { margin-top:72px; }
+  .sec-head { margin-bottom:20px; }
+  .sec-head h2 { font-size:1.6rem; letter-spacing:-.02em; margin:0; }
+  .sec-head p { margin:4px 0 0; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; transition:border-color .15s, box-shadow .15s; }
+  .card:hover { border-color:color-mix(in srgb,var(--blue) 35%,var(--line)); box-shadow:var(--shadow); }
+  .card .ico { font-size:1.5rem; }
+  .card .k { font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 2px; }
+  .card .v { font-weight:600; }
+  .card .v a { text-decoration:none; }
+  .card .v a:hover { text-decoration:underline; }
+
+  /* Les partants */
+  .duo { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .person { margin:0; }
+  .portrait { --r:-2.5deg; margin:0; aspect-ratio:4/5; border-radius:3px; overflow:hidden; background:var(--blue-soft); border:8px solid #fff; box-shadow:0 2px 4px rgba(22,22,22,.06), 0 16px 40px rgba(0,0,145,.14); transform:rotate(var(--r)); transition:transform .3s ease, box-shadow .3s ease; }
+  .person:nth-child(2) .portrait { --r:2deg; }
+  .portrait:hover { transform:rotate(0) scale(1.02); box-shadow:0 2px 4px rgba(22,22,22,.06), 0 24px 56px rgba(0,0,145,.2); }
+  .portrait img { display:block; width:100%; height:100%; object-fit:cover; cursor:zoom-in; }
+  .portrait .initiale { display:grid; place-items:center; height:100%; color:var(--blue); font-size:6rem; font-weight:800; }
+  .person-head { margin:28px 0 12px; }
+  .person h3 { margin:0; font-size:1.6rem; letter-spacing:-.02em; }
+  .person dl { margin:0; display:grid; grid-template-columns:max-content 1fr; gap:6px 16px; font-size:14px; padding-top:12px; border-top:1px solid var(--line); }
+  .person dt { color:var(--muted); }
+  .person dd { margin:0; font-weight:600; }
+  .matricule { margin:14px 0 0; font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+
+  .portrait-wrap { position:relative; }
+  .badge { position:absolute; right:18px; bottom:18px; z-index:1; display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:#fff; color:var(--blue); border-radius:3px; font-size:13px; font-weight:600; box-shadow:0 2px 8px rgba(22,22,22,.18); pointer-events:none; }
+  .badge svg { width:16px; height:16px; }
+
+  /* Galerie */
+  #lb { border:0; padding:0; background:transparent; color:#fff; width:min(96vw,1100px); max-width:none; max-height:96vh; overflow:visible; }
+  #lb::backdrop { background:rgba(8,8,32,.92); }
+  .lb-bar { display:flex; align-items:center; gap:14px; padding-bottom:12px; }
+  .lb-title { font-weight:700; font-size:1.1rem; }
+  .lb-count { color:rgba(255,255,255,.7); font-size:14px; font-variant-numeric:tabular-nums; }
+  .lb-close { margin-left:auto; width:40px; height:40px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4); border-radius:3px; font-size:18px; cursor:pointer; }
+  .lb-close:hover { background:rgba(255,255,255,.1); }
+  .lb-stage { position:relative; display:grid; place-items:center; height:min(72vh,760px); }
+  .lb-stage img { max-width:100%; max-height:min(72vh,760px); object-fit:contain; border-radius:3px; }
+  .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; border:0; border-radius:3px; background:#fff; color:var(--blue); font-size:26px; line-height:1; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.3); }
+  .lb-nav:hover { background:var(--blue-soft); }
+  .lb-prev { left:8px; }
+  .lb-next { right:8px; }
+  .lb-thumbs { display:flex; gap:8px; justify-content:center; padding-top:14px; overflow-x:auto; }
+  .lb-thumbs button { flex:0 0 64px; height:64px; padding:0; background:none; border:2px solid transparent; border-radius:3px; overflow:hidden; opacity:.5; cursor:pointer; transition:opacity .15s; }
+  .lb-thumbs button:hover { opacity:.85; }
+  .lb-thumbs button[aria-current] { border-color:#fff; opacity:1; }
+  .lb-thumbs img { display:block; width:100%; height:100%; object-fit:cover; }
+  #lb.solo .lb-nav, #lb.solo .lb-thumbs, #lb.solo .lb-count { display:none; }
+
+  @media (max-width:640px) {
+    .duo { grid-template-columns:1fr; gap:48px; }
+  }
+
+  footer { margin-top:96px; border-top:1px solid var(--line); padding:24px 0 48px; font-size:13px; color:var(--muted); }
+  footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+  @media (max-width:720px) {
+    .event { grid-template-columns:1fr; -webkit-mask:none; mask:none; }
+    .ticket-main { padding:24px; }
+    .ticket-meta { gap:4px 24px; }
+    .when::before { left:18px; right:18px; top:-1px; bottom:auto; border-left:0; border-top:2px dashed #fff; }
+    .hd-tools { display:none; }
+    .hd-brand img { width:40px; height:40px; }
+    .hd-title { font-size:1.125rem; }
+    .hero { padding-top:48px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap bar">
-    <div class="brand">un-pot.gouv-fr<small>Service de la convivialité · pôle départs</small></div>
-    <nav><a href="#infos">Informations</a><a href="#programme">Programme</a><a href="#inscription">Inscription</a></nav>
+<header class="hd">
+  <div class="wrap hd-body">
+    <a class="hd-brand" href="#" title="Accueil · un-pot.gouv.fr">
+      <img src="logo.svg" alt="" width="48" height="48">
+      <span class="hd-service">
+        <span class="hd-title">un-pot.gouv.fr</span>
+        <span class="hd-tagline">Pots de départ de l'État</span>
+      </span>
+    </a>
+    <div class="hd-tools">
+      <a href="#infos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5z"/></svg>Jeudi 26 novembre · 18 h</a>
+    </div>
   </div>
+  <nav class="hd-nav" aria-label="Menu principal">
+    <ul class="wrap">
+      <li><a href="#" data-vue="accueil" aria-current="page">Accueil</a></li>
+      <li><a href="#partants" data-vue="partants">Les partants</a></li>
+      <li><a href="#infos" data-vue="infos">Informations pratiques</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main class="wrap">
-  <div class="notice">Site parodique à but amical. Aucun lien avec une quelconque administration.</div>
+ <div class="view" id="v-accueil">
+  <div class="hero">
+    <p class="surtitre">Bienvenue sur</p>
+    <h1>un-pot<span class="dot">.</span>gouv<span class="dot">.</span>fr</h1>
+    <p class="lead">Le site officiel des pots de départ au Gouvernement.</p>
+  </div>
 
-  <h1>Pot de départ de <span data-edit>Erwan</span></h1>
-  <p class="lead">Après <span data-edit>5 ans</span> au Service d'information du gouvernement, je vous invite à lever un verre pour mon départ.</p>
-  <p><a class="btn" href="#inscription">Confirmer ma présence</a></p>
-  <p>Compte à rebours : <span id="count">…</span></p>
+  <a class="ticket" href="#invitation" aria-label="Ouvrir l'invitation">
+    <div class="event">
+      <div class="ticket-main">
+        <div class="ticket-top"><p class="eyebrow">Invitation</p><span class="serial">N° POT-2026-1126</span></div>
+        <h2>Pot de départ d'<span data-edit>Erwan</span> et <span data-edit>Andréa</span></h2>
+        <p>Deux départs chez ECONUM, ça se fête ! Venez lever un verre avec nous pour marquer le coup.</p>
+        <div class="ticket-meta">
+          <div><span>Organisation</span><b>ECONUM</b></div>
+          <div><span>Entrée</span><b>Libre</b></div>
+          <div><span>Tenue</span><b>Décontractée</b></div>
+        </div>
+      </div>
+      <div class="when">
+        <span class="day">Jeudi</span>
+        <span class="num">26</span>
+        <span class="month">novembre 2026</span>
+        <span class="hour">à partir de 18 h</span>
+        <small>Lieu en cours de réflexion</small>
+      </div>
+    </div>
+  </a>
+  <p class="hint">Cliquez sur l'invitation pour l'ouvrir <span>→</span></p>
 
-  <div class="hero" aria-hidden="true">
+  <div class="emojis" aria-hidden="true">
     <span>🍻</span><span>🥨</span><span>🍺</span><span>🥂</span><span>🧀</span><span>🎉</span><span>🍷</span><span>🥜</span>
   </div>
 
-  <figure class="photo">
-    <svg viewBox="0 0 600 260" role="img" aria-label="Illustration du bar Aux Ministères">
-      <rect width="600" height="260" fill="#f6f6f6"/>
-      <rect x="60" y="50" width="480" height="170" fill="#fff" stroke="#161616" stroke-width="3"/>
-      <rect x="60" y="50" width="480" height="40" fill="#161616"/>
-      <text x="300" y="79" text-anchor="middle" font-family="Georgia,serif" font-size="24" fill="#fff" letter-spacing="3">AUX MINISTÈRES</text>
-      <rect x="90" y="110" width="110" height="110" fill="#f6f6f6" stroke="#161616" stroke-width="2"/>
-      <rect x="400" y="110" width="110" height="110" fill="#f6f6f6" stroke="#161616" stroke-width="2"/>
-      <rect x="250" y="110" width="100" height="110" fill="#000091" opacity=".85"/>
-      <text x="145" y="175" text-anchor="middle" font-size="44">🍺</text>
-      <text x="455" y="175" text-anchor="middle" font-size="44">🥨</text>
-      <text x="300" y="175" text-anchor="middle" font-size="44">🍻</text>
-    </svg>
-    <figcaption>53 avenue de Ségur, Paris 7e (illustration)</figcaption>
-  </figure>
+ </div>
 
-  <h2 id="infos">Informations pratiques</h2>
-  <dl>
-    <dt>Date</dt><dd><span data-edit>jeudi 19 novembre 2026</span></dd>
-    <dt>Heure</dt><dd><span data-edit>à partir de 18 h</span></dd>
-    <dt>Lieu</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Aux+Minist%C3%A8res+Paris+7e"><span data-edit>Aux Ministères, Paris 7e</span></a></dd>
-    <dt>Tenue</dt><dd>Décontractée.</dd>
-    <dt>Cagnotte</dt><dd><a href="#"><span data-edit>Lien de la cagnotte</span></a></dd>
-  </dl>
+ <div class="view" id="v-details" hidden>
+  <a class="mini" href="#">
+    <span class="mini-main"><span class="mini-back">← Retour</span><b>Pot de départ d'Erwan et Andréa</b></span>
+    <span class="mini-stub">Jeudi 26 novembre · 18 h</span>
+  </a>
 
-  <h2 id="programme">Programme</h2>
-  <div class="grid">
-    <div class="card"><h3>🍻 18 h 00 · Accueil</h3>Premiers verres et chips.</div>
-    <div class="card"><h3>🎤 18 h 30 · Allocutions</h3>Quelques mots.</div>
-    <div class="card"><h3>🎁 19 h 00 · Remise du cadeau</h3>Un petit cadeau.</div>
-    <div class="card"><h3>🥨 19 h 30 · Apéro</h3>Apéro et bretzels.</div>
-  </div>
+  <section id="partants">
+    <div class="sec-head"><h2>Erwan &amp; Andréa</h2></div>
+    <div class="duo">
+      <article class="person" data-agent="erwan">
+        <div class="portrait-wrap"><figure class="portrait"><div class="initiale">E</div></figure></div>
+        <div class="person-head"><h3><span data-edit>Erwan</span></h3></div>
+        <dl>
+          <dt>Ancienneté</dt><dd><span data-edit>5 ans</span></dd>
+          <dt>Motif</dt><dd><span data-edit>Fin de contrat</span></dd>
+          <dt>Signe distinctif</dt><dd><span data-edit>À compléter</span></dd>
+        </dl>
+        <p class="matricule">Fiche agent N° POT-2026-001</p>
+      </article>
+      <article class="person" data-agent="andrea">
+        <div class="portrait-wrap"><figure class="portrait"><div class="initiale">A</div></figure></div>
+        <div class="person-head"><h3><span data-edit>Andréa</span></h3></div>
+        <dl>
+          <dt>Ancienneté</dt><dd><span data-edit>6 mois</span></dd>
+          <dt>Motif</dt><dd><span data-edit>Fin de stage</span></dd>
+          <dt>Signe distinctif</dt><dd><span data-edit>À compléter</span></dd>
+        </dl>
+        <p class="matricule">Fiche agent N° POT-2026-002</p>
+      </article>
+    </div>
+  </section>
 
-  <h2 id="inscription">Inscription</h2>
-  <form id="f">
-    <label>Nom et prénom <input name="nom" required></label>
-    <label>Nombre de personnes
-      <select name="n"><option>1</option><option>2</option><option>3</option></select>
-    </label>
-    <fieldset><legend>Je m'engage à apporter</legend>
-      <label><input type="radio" name="apport" value="salé" checked> Du salé</label>
-      <label><input type="radio" name="apport" value="sucré"> Du sucré</label>
-      <label><input type="radio" name="apport" value="boissons"> Des boissons</label>
-      <label><input type="radio" name="apport" value="rien"> Ma bonne humeur</label>
-    </fieldset>
-    <label>Un petit mot (facultatif) <textarea name="mot" rows="3"></textarea></label>
-    <button class="btn" type="submit">Envoyer</button>
-  </form>
-  <div id="ok" role="status"></div>
 
+  <section id="infos">
+    <div class="sec-head"><h2>Informations pratiques</h2><p>Tout ce qu'il faut savoir avant de venir.</p></div>
+    <div class="grid">
+      <div class="card"><div class="ico">📅</div><div class="k">Date</div><div class="v"><span data-edit>jeudi 26 novembre 2026</span></div></div>
+      <div class="card"><div class="ico">🕕</div><div class="k">Heure</div><div class="v"><span data-edit>à partir de 18 h</span></div></div>
+      <div class="card"><div class="ico">📍</div><div class="k">Lieu</div><div class="v"><span data-edit>En cours de réflexion</span></div></div>
+      <div class="card"><div class="ico">👕</div><div class="k">Tenue</div><div class="v">Décontractée</div></div>
+    </div>
+
+  </section>
+ </div>
 </main>
+<dialog id="lb" aria-label="Galerie photo">
+  <div class="lb-bar"><span class="lb-title"></span><span class="lb-count"></span><button class="lb-close" type="button" aria-label="Fermer">✕</button></div>
+  <div class="lb-stage">
+    <button class="lb-nav lb-prev" type="button" aria-label="Photo précédente">‹</button>
+    <img alt="">
+    <button class="lb-nav lb-next" type="button" aria-label="Photo suivante">›</button>
+  </div>
+  <div class="lb-thumbs"></div>
+</dialog>
+<canvas id="confettis" aria-hidden="true"></canvas>
 
-<footer><div class="wrap">un-pot.gouv-fr · Site non officiel</div></footer>
+
+<footer><div class="wrap"><span>un-pot.gouv.fr · Site officiel</span><span>Fait avec 🍺 et beaucoup de réunions</span></div></footer>
 
 <script>
-  // Date cible : modifier ici (AAAA-MM-JJTHH:MM)
-  var target = new Date("2026-11-19T18:00:00");
-  function tick(){
-    var d = target - new Date(), el = document.getElementById("count");
-    if (d <= 0) { el.textContent = "c'est maintenant !"; return; }
-    var j = Math.floor(d/864e5), h = Math.floor(d%864e5/36e5), m = Math.floor(d%36e5/6e4);
-    el.textContent = j + " j " + h + " h " + m + " min";
+  // Photos : déposer les fichiers dans le dossier photos/ et les lister ici.
+  // La première sert de portrait. S'il y en a plusieurs, un clic ouvre la galerie.
+  // Les fichiers absents sont ignorés ; sans aucune photo, l'initiale s'affiche.
+  var photos = {
+    erwan: [
+      "photos/erwan.jpg",
+      "photos/erwan-2.jpg",
+      "photos/erwan-3.jpg",
+      "photos/erwan-4.jpg",
+      "photos/erwan-5.jpg",
+      "photos/erwan-6.jpg"
+    ],
+    andrea: [
+      "photos/andrea.jpg"
+    ]
+  };
+
+  var lb = document.getElementById("lb"), lbImg = lb.querySelector(".lb-stage img"),
+      lbThumbs = lb.querySelector(".lb-thumbs"), galerie = { liste:[], i:0 };
+
+  function afficher(i){
+    var n = galerie.liste.length;
+    galerie.i = (i + n) % n;
+    lbImg.src = galerie.liste[galerie.i];
+    lb.querySelector(".lb-count").textContent = (galerie.i + 1) + " / " + n;
+    lbThumbs.querySelectorAll("button").forEach(function(b, j){
+      if (j === galerie.i) { b.setAttribute("aria-current", "true"); b.scrollIntoView({ block:"nearest", inline:"nearest" }); }
+      else b.removeAttribute("aria-current");
+    });
   }
-  tick(); setInterval(tick, 30000);
-  document.getElementById("f").addEventListener("submit", function(e){
-    e.preventDefault();
-    var f = e.target, ok = document.getElementById("ok");
-    ok.textContent = "Merci " + f.nom.value + ", votre inscription est enregistrée (" + f.n.value + " personne(s), apport : " + f.apport.value + ").";
-    ok.style.display = "block"; f.reset();
+  function ouvrirGalerie(nom, liste){
+    galerie.liste = liste;
+    lb.querySelector(".lb-title").textContent = nom;
+    lbImg.alt = "Photo de " + nom;
+    lb.classList.toggle("solo", liste.length < 2);
+    lbThumbs.innerHTML = "";
+    liste.forEach(function(src, j){
+      var b = document.createElement("button"), t = new Image();
+      b.type = "button"; b.setAttribute("aria-label", "Photo " + (j + 1));
+      t.src = src; t.alt = "";
+      b.appendChild(t);
+      b.addEventListener("click", function(){ afficher(j); });
+      lbThumbs.appendChild(b);
+    });
+    lb.showModal();
+    afficher(0);
+  }
+
+  lb.querySelector(".lb-prev").addEventListener("click", function(){ afficher(galerie.i - 1); });
+  lb.querySelector(".lb-next").addEventListener("click", function(){ afficher(galerie.i + 1); });
+  lb.querySelector(".lb-close").addEventListener("click", function(){ lb.close(); });
+  lb.addEventListener("click", function(e){ if (e.target === lb || e.target.classList.contains("lb-stage")) lb.close(); });
+  lb.addEventListener("keydown", function(e){
+    if (galerie.liste.length < 2) return;
+    if (e.key === "ArrowLeft") afficher(galerie.i - 1);
+    if (e.key === "ArrowRight") afficher(galerie.i + 1);
   });
+  var x0 = null;
+  lb.addEventListener("touchstart", function(e){ x0 = e.touches[0].clientX; }, { passive:true });
+  lb.addEventListener("touchend", function(e){
+    if (x0 === null || galerie.liste.length < 2) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) afficher(galerie.i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+
+  function charger(src){
+    return new Promise(function(ok){
+      var i = new Image();
+      i.onload = function(){ ok(src); };
+      i.onerror = function(){ ok(null); };
+      i.src = src;
+    });
+  }
+
+  document.querySelectorAll("[data-agent]").forEach(function(fiche){
+    var liste = photos[fiche.dataset.agent];
+    if (!liste) return;
+    var nom = fiche.querySelector("h3").textContent;
+    Promise.all(liste.map(charger)).then(function(r){
+      var dispo = r.filter(Boolean);
+      if (!dispo.length) return;
+      var img = new Image();
+      img.alt = "Portrait de " + nom;
+      img.src = dispo[0];
+      img.addEventListener("click", function(){ ouvrirGalerie(nom, dispo); });
+      fiche.querySelector(".initiale").replaceWith(img);
+      if (dispo.length > 1) {
+        var badge = document.createElement("span");
+        badge.className = "badge";
+        badge.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 6c0-.6.4-1 1-1h18c.6 0 1 .4 1 1v14c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V6zm2 1v12h16V7H4zm3 10 3.5-4.5 2.5 3 3.5-4.5L20 17H7zM7 3h10v1H7V3z"/></svg>' + dispo.length + " photos";
+        fiche.querySelector(".portrait-wrap").appendChild(badge);
+      }
+    });
+  });
+
+  // Navigation entre l'accueil (billet) et la page de détails
+  var vueAccueil = document.getElementById("v-accueil"), vueDetails = document.getElementById("v-details");
+  function router(anime){
+    var h = location.hash.slice(1), details = h === "invitation" || h === "partants" || h === "infos";
+    var maj = function(){
+      vueAccueil.hidden = details;
+      vueDetails.hidden = !details;
+      var actif = !details ? "accueil" : (h === "infos" ? "infos" : "partants");
+      document.querySelectorAll(".hd-nav a").forEach(function(a){
+        if (a.dataset.vue === actif) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      });
+      var cible = (h === "partants" || h === "infos") && document.getElementById(h);
+      if (cible) cible.scrollIntoView({ behavior:"instant" }); else window.scrollTo({ top:0, behavior:"instant" });
+    };
+    var fin;
+    if (anime && details && document.startViewTransition) fin = document.startViewTransition(maj).finished;
+    else { maj(); fin = Promise.resolve(); }
+    if (feter && details) {
+      feter = false;
+      var fait = false, une = function(){ if (!fait) { fait = true; feterQuandPret(); } };
+      fin.then(une, une);
+      setTimeout(une, 900); // filet de sécurité si l'animation ne signale pas sa fin
+    }
+  }
+  // Les confettis partent une fois la nouvelle page affichée et entièrement chargée
+  var feter = false;
+  function feterQuandPret(){
+    var go = function(){
+      var r = document.querySelector(".mini").getBoundingClientRect();
+      if (r.height) confettis(r.left + r.width / 2, r.bottom); else confettis(innerWidth / 2, innerHeight / 3);
+    };
+    if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once:true });
+  }
+  window.addEventListener("hashchange", function(){ router(true); });
+
+  // Confettis au clic sur le billet, aux couleurs du DSFR
+  var toile = document.getElementById("confettis"), ctx = toile.getContext("2d"), parts = [], enCours = false;
+  var couleurs = ["#000091", "#e1000f", "#6a6af4", "#e3e3fd", "#ff8d7e", "#161616"];
+  function confettis(x, y){
+    var dpr = window.devicePixelRatio || 1;
+    toile.width = innerWidth * dpr; toile.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (var i = 0; i < 180; i++) {
+      var a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.1, v = 6 + Math.random() * 10;
+      parts.push({ x:x, y:y, vx:Math.cos(a) * v, vy:Math.sin(a) * v, w:6 + Math.random() * 6, h:3 + Math.random() * 5,
+        r:Math.random() * Math.PI, vr:(Math.random() - .5) * .3, c:couleurs[i % couleurs.length], rond:Math.random() < .25, vie:1 });
+    }
+    if (!enCours) { enCours = true; requestAnimationFrame(animer); }
+  }
+  function animer(){
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    parts = parts.filter(function(p){ return p.vie > 0 && p.y < innerHeight + 20; });
+    parts.forEach(function(p){
+      p.vx *= .985; p.vy = p.vy * .985 + .32; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vie -= .006;
+      ctx.save(); ctx.globalAlpha = Math.min(1, p.vie * 2); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      if (p.rond) { ctx.beginPath(); ctx.arc(0, 0, p.h / 1.5, 0, Math.PI * 2); ctx.fill(); }
+      else ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.r * 2)) + 1);
+      ctx.restore();
+    });
+    if (parts.length) requestAnimationFrame(animer); else { enCours = false; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  document.querySelector(".ticket").addEventListener("click", function(){ feter = true; });
+  router(false);
 </script>
 </body>
 </html>
